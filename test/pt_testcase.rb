@@ -2432,6 +2432,15 @@ class ParseTreeTestCase < MiniTest::Unit::TestCase
                                 s(:lit, 1), s(:lit, 2),
                                 s(:lit, 3), s(:lit, 4)))
 
+  add_tests("hash_new",
+            "Ruby"         => "{ a: 1, b: 2 }",
+            "RawParseTree" => [:hash,
+                               [:lit, :a], [:lit, 1],
+                               [:lit, :b], [:lit, 2]],
+            "ParseTree"    => s(:hash,
+                                s(:lit, :a), s(:lit, 1),
+                                s(:lit, :b), s(:lit, 2)))
+
   add_tests("hash_rescue",
             "Ruby"         => "{ 1 => (2 rescue 3) }",
             "RawParseTree" => [:hash,
