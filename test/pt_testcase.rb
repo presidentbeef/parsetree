@@ -3922,6 +3922,21 @@ class ParseTreeTestCase < MiniTest::Unit::TestCase
             "ParseTree"    => s(:str, "file = (string)\n"),
             "Ruby2Ruby"    => '"file = (string)\\n"')
 
+  add_tests("str_question_control",
+            "Ruby"         => '?\M-\C-a',
+            "RawParseTree" => [:str, "\x81"],
+            "ParseTree"    => s(:str, "\x81"))
+
+  add_tests("str_question_escape",
+            "Ruby"         => '?\n',
+            "RawParseTree" => [:str, "\n"],
+            "ParseTree"    => s(:str, "\n"))
+
+  add_tests("str_question_literal",
+            "Ruby"         => '?a',
+            "RawParseTree" => [:str, "a"],
+            "ParseTree"    => s(:str, "a"))
+
   add_tests("structure_extra_block_for_dvar_scoping",
             "Ruby"         => "a.b do |c, d|\n  unless e.f(c) then\n    g = false\n    d.h { |x, i| g = true }\n  end\nend",
             "RawParseTree" => [:iter,
