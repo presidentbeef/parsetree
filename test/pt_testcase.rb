@@ -888,6 +888,23 @@ class ParseTreeTestCase < MiniTest::Unit::TestCase
                                     s(:lit, :b), s(:lit, 2)),
                                   s(:splat, s(:call, nil, :c, s(:arglist))))))
 
+  add_tests("call_arglist_norm_new_hash",
+            "Ruby"         => "o.m(42, a: 1, b: 2)",
+            "RawParseTree" => [:call,
+                               [:vcall, :o], :m,
+                               [:array,
+                                [:lit, 42],
+                                [:hash,
+                                 [:lit, :a], [:lit, 1],
+                                 [:lit, :b], [:lit, 2]]]],
+            "ParseTree"    => s(:call,
+                                s(:call, nil, :o, s(:arglist)), :m,
+                                s(:arglist,
+                                  s(:lit, 42),
+                                  s(:hash,
+                                    s(:lit, :a), s(:lit, 1),
+                                    s(:lit, :b), s(:lit, 2)))))
+
   add_tests("call_arglist_space",
             "Ruby"         => "a (1,2,3)",
             "RawParseTree" => [:fcall, :a,
@@ -2224,6 +2241,20 @@ class ParseTreeTestCase < MiniTest::Unit::TestCase
                                   s(:hash,
                                     s(:lit, :a), s(:lit, 1),
                                     s(:lit, :b), s(:lit, 2)))))
+
+  add_tests("fcall_arglist_new_hash",
+            "Ruby"         => "m(a: 1, b: 2)",
+            "RawParseTree" => [:fcall, :m,
+                               [:array,
+                                [:hash,
+                                 [:lit, :a], [:lit, 1],
+                                 [:lit, :b], [:lit, 2]]]],
+            "ParseTree"    => s(:call, nil, :m,
+                                s(:arglist,
+                                  s(:hash,
+                                    s(:lit, :a), s(:lit, 1),
+                                    s(:lit, :b), s(:lit, 2)))))
+
 
   add_tests("fcall_arglist_norm_hash",
             "Ruby"         => "m(42, :a => 1, :b => 2)",
