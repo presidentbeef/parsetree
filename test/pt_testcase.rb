@@ -3828,6 +3828,18 @@ class ParseTreeTestCase < MiniTest::Unit::TestCase
                              s(:arglist,
                                s(:array, s(:splat, s(:array, s(:lit, 1)))))))
 
+  add_tests("splat_fcall_middle",
+            "Ruby"         => "meth(1, *[2], 3)",
+            "RawParseTree" => [:fcall, :meth,
+                                  [:lit, 1],
+                                  [:splat, [:array, [:lit, 2]]],
+                                  [:lit, 3]],
+            "ParseTree"    => s(:call, nil, :meth,
+                             s(:arglist,
+                               s(:lit, 1),
+                               s(:splat, s(:array, s(:lit, 2))),
+                               s(:lit, 3))))
+
   add_tests("splat_lasgn",
             "Ruby"         => "x = *[1]",
             "RawParseTree" => [:lasgn, :x, [:svalue, [:splat, [:array, [:lit, 1]]]]],
