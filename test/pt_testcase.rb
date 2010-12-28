@@ -974,6 +974,12 @@ class ParseTreeTestCase < MiniTest::Unit::TestCase
                                 :-@, s(:arglist)),
             "Ruby2Ruby"    => "-(2 ** 31)")
 
+  
+  add_tests("call_unary_not",
+            "Ruby"         => "!a",
+            "RawParseTree" => [:call, [:vcall, :a], :"!@"],
+            "ParseTree"    => s(:call,
+                                s(:call, nil, :a, s(:arglist)), :"!@", s(:arglist)))
   add_tests("case",
             "Ruby"         => "var = 2\nresult = \"\"\ncase var\nwhen 1 then\n  puts(\"something\")\n  result = \"red\"\nwhen 2, 3 then\n  result = \"yellow\"\nwhen 4 then\n  # do nothing\nelse\n  result = \"green\"\nend\ncase result\nwhen \"red\" then\n  var = 1\nwhen \"yellow\" then\n  var = 2\nwhen \"green\" then\n  var = 3\nelse\n  # do nothing\nend\n",
             "RawParseTree" => [:block,
